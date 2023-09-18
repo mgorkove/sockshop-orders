@@ -126,10 +126,11 @@ public class OrdersController {
     }
 
     private String parseId(String href) {
+        LOG.debug("href: " + href);
         Pattern idPattern = Pattern.compile("[\\w-]+$");
         Matcher matcher = idPattern.matcher(href);
         if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse user ID from: " + href);
+            return null;
         }
         return matcher.group(0);
     }
