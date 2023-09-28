@@ -98,6 +98,7 @@ public class OrdersController {
 
             // Ship
             String customerId = parseId(customerFuture.get(timeout, TimeUnit.SECONDS).getId().getHref());
+            LOG.debug("customerId: " + customerId);
             Future<Shipment> shipmentFuture = asyncGetService.postResource(config.getShippingUri(), new Shipment
                     (customerId), new ParameterizedTypeReference<Shipment>() {
             });
@@ -126,10 +127,11 @@ public class OrdersController {
     }
 
     private String parseId(String href) {
+        LOG.debug("href: " + href);
         Pattern idPattern = Pattern.compile("[\\w-]+$");
         Matcher matcher = idPattern.matcher(href);
         if (!matcher.find()) {
-            throw new IllegalStateException("Could not parse user ID from: " + href);
+            return null;
         }
         return matcher.group(0);
     }
